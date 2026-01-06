@@ -1,0 +1,21 @@
+package com.gabriel.desafio_backend_anotaai.domain.category;
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document(collection = "categories")
+@Getter
+@Setter
+@NoArgsConstructor
+public class Category {
+
+    @Id
+    private String Id;
+    private String title;
+    private String description;
+    private String ownerId;
+
+}
