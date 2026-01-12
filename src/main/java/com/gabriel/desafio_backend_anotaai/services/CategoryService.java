@@ -2,6 +2,7 @@ package com.gabriel.desafio_backend_anotaai.services;
 
 import com.gabriel.desafio_backend_anotaai.domain.category.Category;
 import com.gabriel.desafio_backend_anotaai.domain.category.CategoryDTO;
+import com.gabriel.desafio_backend_anotaai.domain.category.exceptions.CategoryNotFoundException;
 import com.gabriel.desafio_backend_anotaai.repositories.CategoryRepository;
 import org.springframework.stereotype.Service;
 
@@ -22,8 +23,22 @@ public class CategoryService {
     }
 
     public Category update(String id,CategoryDTO categoryData) {
-        Category category = this.repository.findById(id).orElseThrow(CategoryNotFoundException);
-        return newCategory;
+        Category category = this.repository.findById(id)
+                .orElseThrow(CategoryNotFoundException:: new);
+
+        if (!categoryData.title().isEmpty()) category.setTitle(categoryData.title());
+        if (!categoryData.description().isEmpty()) category.setDescription(categoryData.description());
+
+        this.repository.save(category);
+
+        return category;
+    }
+
+    public void delete(String id) {
+        Category category = this.repository.findById(id)
+                .orElseThrow(CategoryNotFoundException:: new);
+
+        this.repository.delete(category);
     }
 
     public List<Category> getAll() {
